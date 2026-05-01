@@ -16,9 +16,10 @@ import {
 const { width, height } = Dimensions.get("window");
 
 export function Home({ navigation }: any) {
+
   const renderBanner = () => (
     <ImageBackground
-      source={require("../../assets/Utilitarios/fundo banner1.png")}
+      source={require("../../assets/Utilitarios/fundo_banner3.png")}
       style={styles.bannerContainer}
       resizeMode="stretch"
     >
@@ -28,12 +29,25 @@ export function Home({ navigation }: any) {
           <Ionicons name="menu" size={28} color="#ffffff" />
         </TouchableOpacity>
       </View>
+
+      <View style={styles.heroTextContainer}>
+        <Text style={styles.heroSubtitle}>PRIMEIRA COMPRA</Text>
+        <Text style={styles.heroTitle}>
+          DESCONTO DE <Text style={styles.goldText}>20%</Text>
+        </Text>
+        <View style={styles.heroBadge}>
+          <Text style={styles.heroBadgeText}>+ FRETE GRÁTIS</Text>
+        </View>
+      </View>
     </ImageBackground>
   );
 
+
   const renderContent = () => (
     <View style={styles.contentWrapper}>
-      {/* Banner Frete Grátis */}
+
+
+      {/* faixinha de promocao do frete */}
       <View style={styles.promoBanner}>
         <MaterialCommunityIcons name="truck" size={24} color="#fff" />
         <Text style={styles.promoText}>
@@ -41,94 +55,170 @@ export function Home({ navigation }: any) {
         </Text>
       </View>
 
-      {/* Categorias */}
+
+      {/* barra de categorias q rola pro lado */}
+      <Text style={styles.sectionTitle}>Categorias</Text>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
         style={styles.categoriesScroll}
       >
-        <View style={styles.categoryCard}>
-          <Image
-            source={require("../../assets/Utilitarios/banner relogio.png")}
-            style={styles.categoryImage}
-          />
-          <Text style={styles.categoryName}>Relógios</Text>
-        </View>
-        <View style={styles.categoryCard}>
-          <Image
-            source={require("../../assets/Utilitarios/banner anel.png")}
-            style={styles.categoryImage}
-          />
-          <Text style={styles.categoryName}>Anéis</Text>
-        </View>
-        <View style={styles.categoryCard}>
-          <Image
-            source={require("../../assets/Utilitarios/banner pulseira.png")}
-            style={styles.categoryImage}
-          />
-          <Text style={styles.categoryName}>Pulseiras</Text>
-        </View>
-        <View style={styles.categoryCard}>
-          <Image
-            source={require("../../assets/Utilitarios/banner colar.png")}
-            style={styles.categoryImage}
-          />
-          <Text style={styles.categoryName}>Colares</Text>
-        </View>
-        <View style={styles.categoryCard}>
-          <Image
-            source={require("../../assets/Utilitarios/banner brinco.png")}
-            style={styles.categoryImage}
-          />
-          <Text style={styles.categoryName}>Brincos</Text>
-        </View>
+        {[
+          { name: "Relógios", img: require("../../assets/Utilitarios/banner relogio.png") },
+          { name: "Anéis", img: require("../../assets/Utilitarios/banner anel.png") },
+          { name: "Pulseiras", img: require("../../assets/Utilitarios/banner pulseira.png") },
+          { name: "Colares", img: require("../../assets/Utilitarios/banner colar.png") },
+          { name: "Brincos", img: require("../../assets/Utilitarios/banner brinco.png") },
+        ].map((item, index) => (
+          <View key={index} style={styles.categoryCard}>
+            <Image source={item.img} style={styles.categoryImage} />
+            <Text style={styles.categoryName}>{item.name}</Text>
+          </View>
+        ))}
       </ScrollView>
 
-      {/* Destaque */}
+      
       <View style={styles.destaqueSection}>
-        <Text style={styles.destaqueTitulo}>destaque</Text>
+        <Text style={styles.destaqueTitulo}>DESTAQUES</Text>
         <View style={styles.destaqueLine} />
       </View>
 
-      {/* Produtos Grid */}
       <View style={styles.productsGrid}>
-        <View style={styles.productCard}>
-          <Image
-            source={require("../../assets/Utilitarios/banner anel.png")}
-            style={styles.productImage}
-          />
-          <Text style={styles.productName}>Anel Masculino Linha...</Text>
+        <TouchableOpacity
+          style={styles.productCard}
+          onPress={() => navigation.navigate("Produto", {
+            product: {
+              name: "Anel Masculino Linha Silver",
+              price: "R$ 199,99",
+              image: require("../../assets/Utilitarios/banner anel.png"),
+              category: "Anéis",
+              description: "Anel Masculino Linha Silver em Aço Inoxidável.\nAltura: 6,00(mm)",
+            }
+          })}
+        >
+          <Image source={require("../../assets/Utilitarios/banner anel.png")} style={styles.productImage} />
+          <Text style={styles.productName}>Anel Masculino Linha Silver</Text>
           <Text style={styles.productPrice}>R$ 199,99</Text>
-        </View>
-        <View style={styles.productCard}>
-          <Image
-            source={require("../../assets/Utilitarios/banner pulseira.png")}
-            style={styles.productImage}
-          />
-          <Text style={styles.productName}>Pulseira clássica</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.productCard}
+          onPress={() => navigation.navigate("Produto", {
+            product: {
+              name: "Pulseira Clássica Gold",
+              price: "R$ 179,99",
+              image: require("../../assets/Utilitarios/banner pulseira.png"),
+              category: "Pulseiras",
+              description: "Pulseira Clássica Gold Banhada a Ouro 18k.\nComprimento: 19cm",
+            }
+          })}
+        >
+          <Image source={require("../../assets/Utilitarios/banner pulseira.png")} style={styles.productImage} />
+          <Text style={styles.productName}>Pulseira Clássica Gold</Text>
           <Text style={styles.productPrice}>R$ 179,99</Text>
-        </View>
+        </TouchableOpacity>
       </View>
 
-      <View style={{ height: 100 }} />
+      {/* produtos pra homem (relogios e correntes) */}
+      <View style={styles.destaqueSection}>
+        <Text style={styles.destaqueTitulo}>MASCULINO</Text>
+        <View style={styles.destaqueLine} />
+      </View>
+
+      <View style={styles.productsGrid}>
+        <TouchableOpacity
+          style={styles.productCard}
+          onPress={() => navigation.navigate("Produto", {
+            product: {
+              name: "Relógio Classic Black",
+              price: "R$ 349,90",
+              image: require("../../assets/Utilitarios/banner relogio.png"),
+              category: "Relógios",
+              description: "Relógio Analógico Masculino Premium.\nResistente à água 5ATM.",
+            }
+          })}
+        >
+          <Image source={require("../../assets/Utilitarios/banner relogio.png")} style={styles.productImage} />
+          <Text style={styles.productName}>Relógio Classic Black</Text>
+          <Text style={styles.productPrice}>R$ 349,90</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.productCard}
+          onPress={() => navigation.navigate("Produto", {
+            product: {
+              name: "Corrente Aço Inoxidável",
+              price: "R$ 129,90",
+              image: require("../../assets/Utilitarios/banner colar.png"),
+              category: "Colares",
+              description: "Corrente Masculina em Aço Inoxidável 316L.\nComprimento: 60cm.",
+            }
+          })}
+        >
+          <Image source={require("../../assets/Utilitarios/banner colar.png")} style={styles.productImage} />
+          <Text style={styles.productName}>Corrente Aço Inoxidável</Text>
+          <Text style={styles.productPrice}>R$ 129,90</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* produtos pra mulher (brincos e aneis) */}
+      <View style={styles.destaqueSection}>
+        <Text style={styles.destaqueTitulo}>FEMININO</Text>
+        <View style={styles.destaqueLine} />
+      </View>
+
+      <View style={styles.productsGrid}>
+        <TouchableOpacity
+          style={styles.productCard}
+          onPress={() => navigation.navigate("Produto", {
+            product: {
+              name: "Brinco Argola Ouro 18k",
+              price: "R$ 259,90",
+              image: require("../../assets/Utilitarios/banner brinco.png"),
+              category: "Brincos",
+              description: "Brinco Feminino estilo Argola com banho de Ouro 18k.",
+            }
+          })}
+        >
+          <Image source={require("../../assets/Utilitarios/banner brinco.png")} style={styles.productImage} />
+          <Text style={styles.productName}>Brinco Argola Ouro 18k</Text>
+          <Text style={styles.productPrice}>R$ 259,90</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.productCard}
+          onPress={() => navigation.navigate("Produto", {
+            product: {
+              name: "Anel Solitário Prata 925",
+              price: "R$ 149,90",
+              image: require("../../assets/Utilitarios/banner anel.png"),
+              category: "Anéis",
+              description: "Anel Solitário Feminino em Prata 925 com zircônia central.",
+            }
+          })}
+        >
+          <Image source={require("../../assets/Utilitarios/banner anel.png")} style={styles.productImage} />
+          <Text style={styles.productName}>Anel Solitário Prata 925</Text>
+          <Text style={styles.productPrice}>R$ 149,90</Text>
+        </TouchableOpacity>
+      </View>
+
+
+      <View style={styles.footer}>
+        <Text style={styles.footerText}>test</Text>
+        <Text style={styles.footerSubText}>test</Text>
+      </View>
     </View>
   );
 
   return (
     <View style={styles.container}>
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor="transparent"
-        translucent
-      />
+      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
 
       <FlatList
         data={[{ id: "banner" }, { id: "content" }]}
-        renderItem={({ item }) =>
-          item.id === "banner" ? renderBanner() : renderContent()
-        }
+        renderItem={({ item }) => (item.id === "banner" ? renderBanner() : renderContent())}
         keyExtractor={(item) => item.id}
-        scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}
       />
     </View>
@@ -136,10 +226,17 @@ export function Home({ navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
     backgroundColor: "#000",
   },
+  contentWrapper: {
+    width: width,
+    backgroundColor: "#fff",
+  },
+
+
   bannerContainer: {
     width: width,
     height: height,
@@ -160,18 +257,45 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.4)",
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 6,
-    marginTop: "10%",
+    marginTop: 40,
   },
-  contentWrapper: {
-    width: width,
-    backgroundColor: "#fff",
-    paddingBottom: 100,
+  heroTextContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingBottom: "30%",
   },
+  heroSubtitle: {
+    color: "#fff",
+    fontSize: 14,
+    letterSpacing: 4,
+    fontWeight: "300",
+    marginBottom: 8,
+  },
+  heroTitle: {
+    color: "#fff",
+    fontSize: 34,
+    fontWeight: "900",
+    textAlign: "center",
+  },
+  goldText: {
+    color: "#d4af37",
+    fontSize: 48,
+  },
+  heroBadge: {
+    backgroundColor: "#d4af37",
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 4,
+    marginTop: 20,
+  },
+  heroBadgeText: {
+    color: "#000",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+
+
   promoBanner: {
     backgroundColor: "#000",
     flexDirection: "row",
@@ -185,72 +309,93 @@ const styles = StyleSheet.create({
     fontSize: 13,
     flex: 1,
   },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginLeft: 16,
+    marginTop: 20,
+    color: "#000",
+  },
+
+
   categoriesScroll: {
     paddingHorizontal: 16,
-    paddingVertical: 20,
-    backgroundColor: "#fff",
+    paddingVertical: 15,
   },
   categoryCard: {
     alignItems: "center",
     marginRight: 20,
   },
   categoryImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 50,
+    width: 70,
+    height: 70,
+    borderRadius: 35,
     backgroundColor: "#f0f0f0",
-    marginBottom: 8,
   },
   categoryName: {
-    fontSize: 13,
+    fontSize: 12,
     color: "#333",
-    fontWeight: "500",
+    marginTop: 5,
   },
+
+
   destaqueSection: {
-    paddingHorizontal: 16,
     paddingVertical: 20,
     alignItems: "center",
   },
   destaqueTitulo: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "bold",
     color: "#000",
-    marginBottom: 12,
   },
   destaqueLine: {
-    width: 60,
-    height: 2,
+    width: 40,
+    height: 3,
     backgroundColor: "#d4af37",
+    marginTop: 5,
   },
   productsGrid: {
     flexDirection: "row",
     paddingHorizontal: 12,
-    gap: 12,
     justifyContent: "space-between",
   },
   productCard: {
-    width: (width - 48) / 2,
-    backgroundColor: "#f5f5f5",
+    width: (width - 40) / 2,
+    backgroundColor: "#f9f9f9",
     borderRadius: 8,
-    padding: 12,
-    alignItems: "center",
+    padding: 10,
+    marginBottom: 15,
   },
   productImage: {
     width: "100%",
-    height: 150,
-    borderRadius: 8,
-    backgroundColor: "#e0e0e0",
-    marginBottom: 12,
+    height: 160,
+    borderRadius: 4,
   },
   productName: {
-    fontSize: 12,
-    color: "#333",
-    marginBottom: 8,
-    textAlign: "center",
+    fontSize: 13,
+    color: "#444",
+    marginVertical: 8,
   },
   productPrice: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: "bold",
     color: "#000",
+  },
+
+  // rodapezinho padrao da pagina
+  footer: {
+    padding: 40,
+    alignItems: "center",
+    backgroundColor: "#f0f0f0",
+    marginTop: 20,
+  },
+  footerText: {
+    fontWeight: "bold",
+    color: "#333",
+  },
+  footerSubText: {
+    fontSize: 12,
+    color: "#888",
+    marginTop: 5,
   },
 });

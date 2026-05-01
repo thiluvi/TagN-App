@@ -4,6 +4,8 @@ import { Text, View } from "react-native";
 import { CustomTabBar } from "../components/CustomTabBar";
 import { Home } from "../pages/Home";
 import { Perfil } from "../pages/Perfil";
+import { Sacola } from "../pages/Sacola";
+import { Favoritos } from "../pages/Favoritos";
 
 const Tab = createBottomTabNavigator();
 
@@ -30,8 +32,8 @@ export function TabRoutes() {
       screenOptions={{ headerShown: false }}
     >
       <Tab.Screen name="HomeTab" component={Home} />
-      <Tab.Screen name="BagTab" component={DummyScreen} />
-      <Tab.Screen name="HeartTab" component={DummyScreen} />
+      <Tab.Screen name="BagTab" component={Sacola} />
+      <Tab.Screen name="HeartTab" component={Favoritos} />
       <Tab.Screen name="SearchTab" component={DummyScreen} />
       <Tab.Screen name="PerfilTab" component={Perfil} />
     </Tab.Navigator>

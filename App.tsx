@@ -1,8 +1,11 @@
 import React from 'react';
 import { Routes } from './src/routes';
+import { ShopProvider } from './src/context/ShopContext';
 
 export default function App() {
-  // O App simplesmente renderiza o arquivo de Rotas.
-  // As Rotas vão decidir mostrar o Login primeiro!
-  return <Routes />;
+  return (
+    <ShopProvider>
+      <Routes />
+    </ShopProvider>
+  );
 }

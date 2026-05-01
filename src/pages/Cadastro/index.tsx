@@ -16,20 +16,21 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Feather } from "@expo/vector-icons";
 
 export function Cadastro({ navigation }: any) {
-  // Estados para os campos do formulário
+  // estados pra guardar o que o usuario digita nos inputs
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [confirmaSenha, setConfirmaSenha] = useState("");
 
+  // funcao que roda quando clica no botao de cadastrar
   const handleCadastro = async () => {
-    // Validação simples
+    // verifica se tem algum campo vazio
     if (!nome || !email || !senha) {
       Alert.alert("Atenção", "Por favor, preencha todos os campos.");
       return;
     } 
     
-    // 1. Validação de Email (Regex para formato padrão)
+    // validacao basica de email que peguei na net pra ver se tem @
     const emailRegex = /\S+@\S+\.\S+/;
     if (!emailRegex.test(email)) {
       Alert.alert(
@@ -39,22 +40,23 @@ export function Cadastro({ navigation }: any) {
       return;
     }
 
-    // 2. Validação de Senha (Mínimo 6 caracteres)
+    // verifica se a senha tem pelo menos 6 caracteres senao o backend barra
     if (senha.length < 6) {
       Alert.alert("Erro", "A senha deve ter pelo menos 6 caracteres.");
       return;
     }
 
-    // 3. Verificação de confirmação de senha
+    // ve se o cara digitou a senha igual nas duas vezes
     if (senha !== confirmaSenha) {
       Alert.alert("Erro", "As senhas não coincidem!");
       return;
     }
 
     try {
-      const IP_DO_COMPUTADOR = "192.168.15.4";
+      // url da api (coloquei meu ip fixo pq o localhost tava bugando no emulador)
+      const URL_BACKEND = "http://192.168.1.7:8080";
       const response = await fetch(
-        `http://${IP_DO_COMPUTADOR}:8080/api/auth/cadastro`,
+        `${URL_BACKEND}/api/auth/cadastro`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -62,6 +64,7 @@ export function Cadastro({ navigation }: any) {
         },
       );
 
+      // se voltar status 201 quer dizer q criou no banco de dados e pode voltar
       if (response.status === 201) {
         Alert.alert("Sucesso", "Conta criada com sucesso!");
         navigation.goBack();
@@ -75,15 +78,16 @@ export function Cadastro({ navigation }: any) {
   };
 
   return (
+    // keyboardavoidingview pra nao deixar o teclado cobrir a tela qdo abre
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ImageBackground
-        source={require("../../assets/Utilitarios/plano de fundo.png")}
+        source={require("../../assets/Utilitarios/banner.png")}
         style={styles.backgroundImage}
       >
-        {/* Área superior (botão de voltar) */}
+       
         <View style={styles.topSection}>
           <TouchableOpacity
             style={styles.backButton}
@@ -93,7 +97,7 @@ export function Cadastro({ navigation }: any) {
           </TouchableOpacity>
         </View>
 
-        {/* Área inferior branca (Bottom Sheet) */}
+        
         <View style={styles.bottomSheet}>
           <ScrollView
             showsVerticalScrollIndicator={false}
@@ -101,7 +105,7 @@ export function Cadastro({ navigation }: any) {
           >
             <Text style={styles.title}>Cadastre-se</Text>
 
-            {/* Input de Nome */}
+            {/* campo do nome */}
             <View style={styles.inputContainer}>
               <Text style={styles.inputLabel}>Nome</Text>
               <TextInput
@@ -113,7 +117,7 @@ export function Cadastro({ navigation }: any) {
               />
             </View>
 
-            {/* Input de Email */}
+            {/* campo do email */}
             <View style={styles.inputContainer}>
               <Text style={styles.inputLabel}>Email</Text>
               <TextInput
@@ -127,7 +131,7 @@ export function Cadastro({ navigation }: any) {
               />
             </View>
 
-            {/* Input de Senha */}
+            {/* campo da senha q esconde as letrinhas */}
             <View style={styles.inputContainer}>
               <Text style={styles.inputLabel}>Senha</Text>
               <TextInput
@@ -140,7 +144,7 @@ export function Cadastro({ navigation }: any) {
               />
             </View>
 
-            {/* Input de Confirmar Senha */}
+            
             <View style={styles.inputContainer}>
               <Text style={styles.inputLabel}>Confirme a senha</Text>
               <TextInput
@@ -153,7 +157,7 @@ export function Cadastro({ navigation }: any) {
               />
             </View>
 
-            {/* Botão de Cadastro */}
+            {/* botao q manda pro banco */}
             <TouchableOpacity
               style={styles.registerButton}
               onPress={handleCadastro}
@@ -178,7 +182,7 @@ const styles = StyleSheet.create({
   },
   topSection: {
     flex: 1,
-    paddingTop: 50, // Espaço para a barra de status
+    paddingTop: 50, 
     paddingHorizontal: 20,
   },
   backButton: {
@@ -193,17 +197,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     paddingTop: 40,
     paddingBottom: 20,
-    flex: 3, // Ocupa um pouco mais de espaço que o login
+    flex: 3,
   },
   scrollContent: {
-    paddingBottom: 40, // Espaço extra no final da rolagem
+    paddingBottom: 40, 
   },
   title: {
     fontSize: 28,
     fontWeight: "bold",
     color: "#000",
     marginBottom: 30,
-    textAlign: "center", // Centralizado como na imagem
+    textAlign: "center", 
   },
   inputContainer: {
     borderWidth: 1,
@@ -224,7 +228,7 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   registerButton: {
-    backgroundColor: "#5C4033", // Cor marrom baseada na imagem/login
+    backgroundColor: "#5C4033", 
     borderRadius: 20,
     paddingVertical: 18,
     alignItems: "center",

@@ -1,6 +1,7 @@
 import { Feather } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useEffect, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import React, { useState, useCallback } from "react";
 import {
   Dimensions,
   Platform,
@@ -14,18 +15,25 @@ import {
 const { width } = Dimensions.get("window");
 
 export function Perfil({ navigation }: any) {
+  // estado pra guardar os dados do cara que ta logado
   const [userData, setUserData] = useState<any>(null);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const storedUser = await AsyncStorage.getItem("@tagn_user");
-      if (storedUser) {
-        setUserData(JSON.parse(storedUser));
-      }
-    };
-    fetchUser();
-  }, []);
+  // esse bagulho roda toda vez que abre a aba de perfil pra checar se tem alguem logado
+  useFocusEffect(
+    useCallback(() => {
+      const fetchUser = async () => {
+        const storedUser = await AsyncStorage.getItem("@tagn_user");
+        if (storedUser) {
+          setUserData(JSON.parse(storedUser));
+        } else {
+          setUserData(null);
+        }
+      };
+      fetchUser();
+    }, [])
+  );
 
+  // apaga o user do celular e manda pro login de volta
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem("@tagn_user");
@@ -39,7 +47,7 @@ export function Perfil({ navigation }: any) {
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
 
-      {/* Header */}
+     
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
@@ -49,7 +57,6 @@ export function Perfil({ navigation }: any) {
         </TouchableOpacity>
       </View>
 
-      {/* User Info */}
       <View style={styles.userInfoSection}>
         <Feather
           name="user"
@@ -62,56 +69,78 @@ export function Perfil({ navigation }: any) {
         </Text>
       </View>
 
-      {/* Main Content Area (Gray background) */}
+     
       <View style={styles.contentArea}>
-        <View style={styles.menuList}>
-          {/* Menu Item 1 */}
-          <TouchableOpacity style={styles.menuItem}>
-            <View style={styles.menuIconContainer}>
-              <Feather name="clipboard" size={24} color="#000" />
-            </View>
-            <View style={styles.menuTextContainer}>
-              <Text style={styles.menuTitle}>Meus pedidos</Text>
-              <Text style={styles.menuSubtitle}>Ver histórico de compras</Text>
-            </View>
-          </TouchableOpacity>
+        {/* so mostra esse menu de opcoes se o cara tiver logado de vdd */}
+        {userData && (
+          <View style={styles.menuList}>
+           
+            <TouchableOpacity style={styles.menuItem}>
+              <View style={styles.menuIconContainer}>
+                <Feather name="clipboard" size={24} color="#000" />
+              </View>
+              <View style={styles.menuTextContainer}>
+                <Text style={styles.menuTitle}>Meus pedidos</Text>
+                <Text style={styles.menuSubtitle}>Ver histórico de compras</Text>
+              </View>
+            </TouchableOpacity>
 
-          {/* Menu Item 2 */}
-          <TouchableOpacity style={styles.menuItem}>
-            <View style={styles.menuIconContainer}>
-              <Feather name="map-pin" size={24} color="#000" />
-            </View>
-            <View style={styles.menuTextContainer}>
-              <Text style={styles.menuTitle}>Meu endereços</Text>
-              <Text style={styles.menuSubtitle}>Gerenciar endereços</Text>
-            </View>
-          </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.menuItem}>
+              <View style={styles.menuIconContainer}>
+                <Feather name="map-pin" size={24} color="#000" />
+              </View>
+              <View style={styles.menuTextContainer}>
+                <Text style={styles.menuTitle}>Meu endereços</Text>
+                <Text style={styles.menuSubtitle}>Gerenciar endereços</Text>
+              </View>
+            </TouchableOpacity>
 
-          {/* Menu Item 3 */}
-          <TouchableOpacity style={styles.menuItem}>
-            <View style={styles.menuIconContainer}>
-              <Feather name="file-text" size={24} color="#000" />
-            </View>
-            <View style={styles.menuTextContainer}>
-              <Text style={styles.menuTitle}>Informações da conta</Text>
-              <Text style={styles.menuSubtitle}>Gerenciar senha, nome</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-
-        {/* Logout Button */}
-        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-          <View style={styles.logoutIconWrapper}>
-            <Feather
-              name="log-out"
-              size={24}
-              color="#000"
-              style={{ transform: [{ scaleX: -1 }] }}
-            />
+            
+            <TouchableOpacity style={styles.menuItem}>
+              <View style={styles.menuIconContainer}>
+                <Feather name="file-text" size={24} color="#000" />
+              </View>
+              <View style={styles.menuTextContainer}>
+                <Text style={styles.menuTitle}>Informações da conta</Text>
+                <Text style={styles.menuSubtitle}>Gerenciar senha, nome</Text>
+              </View>
+            </TouchableOpacity>
           </View>
-          <Text style={styles.logoutText}>Sair</Text>
-          <View style={styles.logoutIconSpacer} />
-        </TouchableOpacity>
+        )}
+
+        
+        {/* se ta logado mostra botao de sair vermelho senao mostra os de entrar e criar conta */}
+        {userData ? (
+          <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+            <View style={styles.logoutIconWrapper}>
+              <Feather
+                name="log-out"
+                size={24}
+                color="#000"
+                style={{ transform: [{ scaleX: -1 }] }}
+              />
+            </View>
+            <Text style={styles.logoutText}>Sair</Text>
+            <View style={styles.logoutIconSpacer} />
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.authButtonsContainer}>
+            <TouchableOpacity 
+              style={styles.loginButton} 
+              onPress={() => navigation.navigate("Login")}
+            >
+              <Text style={styles.loginButtonText}>ENTRAR</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity 
+              style={styles.registerButton} 
+              onPress={() => navigation.navigate("Cadastro")}
+            >
+              <Text style={styles.registerButtonText}>CRIAR CONTA</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -201,5 +230,34 @@ const styles = StyleSheet.create({
   },
   logoutIconSpacer: {
     width: 24,
+  },
+  authButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 40,
+    gap: 10,
+  },
+  loginButton: {
+    flex: 1,
+    backgroundColor: '#000',
+    padding: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  loginButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  registerButton: {
+    flex: 1,
+    borderColor: '#000',
+    borderWidth: 1,
+    padding: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  registerButtonText: {
+    color: '#000',
+    fontWeight: 'bold',
   },
 });

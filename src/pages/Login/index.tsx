@@ -16,20 +16,23 @@ import { Feather } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function Login({ navigation }: any) {
-  // Estados para guardar o que o usuário digita
+
+  // guardando email e senha q o cara digita
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
   const handleLogin = async () => {
+    // bloqueia se tentar logar com campo vazio
     if (!email || !senha) {
       Alert.alert("Erro", "Preencha todos os campos");
       return;
     }
 
     try {
-      const IP_DO_COMPUTADOR = "192.168.15.4";
+      // tenta mandar pro backend no meu ip local pq no emulador as vezes buga
+      const URL_BACKEND = "http://192.168.1.7:8080";
       const response = await fetch(
-        `http://${IP_DO_COMPUTADOR}:8080/api/auth/login`,
+        `${URL_BACKEND}/api/auth/login`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -37,15 +40,17 @@ export function Login({ navigation }: any) {
         },
       );
 
+      // se deu bom (status 200), pega os dados da resposta
       if (response.ok) {
         const userData = await response.json();
 
-        // SALVANDO O USUÁRIO: Transformamos o objeto em string para guardar
+        // salva no asyncstorage pro app lembrar q ele ta logado
         await AsyncStorage.setItem("@tagn_user", JSON.stringify(userData));
 
         Alert.alert("Bem-vindo!", `Olá, ${userData.nome}`);
-        navigation.replace("Home"); // 'replace' impede que o usuário volte para a tela de login
+        navigation.replace("Home"); 
       } else {
+       
         Alert.alert("Erro", "E-mail ou senha inválidos.");
       }
     } catch (error) {
@@ -54,18 +59,19 @@ export function Login({ navigation }: any) {
   };
 
   return (
+    // esse avoidingview salva a vida pro teclado nao cobrir o botao de login
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      {/* Atenção: Substitua 'nome-da-sua-imagem.png' pelo nome real do arquivo 
-        que está na sua pasta assets.
-      */}
+      
+
       <ImageBackground
-        source={require("../../assets/Utilitarios/plano de fundo.png")}
+        source={require("../../assets/Utilitarios/banner.png")}
         style={styles.backgroundImage}
       >
-        {/* Área superior transparente (onde fica o botão de voltar) */}
+       
+        {/* botaozin de voltar pro inicio */}
         <View style={styles.topSection}>
           <TouchableOpacity
             style={styles.backButton}
@@ -75,7 +81,7 @@ export function Login({ navigation }: any) {
           </TouchableOpacity>
         </View>
 
-        {/* Área inferior branca (Bottom Sheet) */}
+      
         <View style={styles.bottomSheet}>
           <ScrollView
             showsVerticalScrollIndicator={false}
@@ -83,7 +89,8 @@ export function Login({ navigation }: any) {
           >
             <Text style={styles.title}>Bem vindo(a) de volta</Text>
 
-            {/* Input de Email */}
+          
+            {/* digita o email aqui */}
             <View style={styles.inputContainer}>
               <Text style={styles.inputLabel}>Email</Text>
               <TextInput
@@ -97,7 +104,8 @@ export function Login({ navigation }: any) {
               />
             </View>
 
-            {/* Input de Senha */}
+           
+            
             <View style={styles.inputContainer}>
               <Text style={styles.inputLabel}>Senha</Text>
               <TextInput
@@ -106,23 +114,25 @@ export function Login({ navigation }: any) {
                 placeholderTextColor="#A0A0A0"
                 value={senha}
                 onChangeText={setSenha}
-                secureTextEntry // Esconde a senha com asteriscos
+                secureTextEntry 
               />
             </View>
 
-            {/* Botão de Entrar */}
+            
+            {/* manda bala no login */}
             <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
               <Text style={styles.loginButtonText}>Entrar</Text>
             </TouchableOpacity>
 
-            {/* Rodapé com link para Cadastro */}
+           
+            {/* linkzinho pra quem n tem conta ir pro cadastro q eu fiz antes */}
             <View style={styles.footer}>
               <Text style={styles.footerText}>Ainda não tem uma conta? </Text>
               <TouchableOpacity onPress={() => navigation.navigate("Cadastro")}>
                 <Text style={styles.footerLink}>Crie uma</Text>
               </TouchableOpacity>
             </View>
-            {/* Adicione este espaço extra antes do fechamento do ScrollView */}
+         
             <View style={{ height: 50 }} />
           </ScrollView>
         </View>
@@ -138,11 +148,11 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     resizeMode: "cover",
-    justifyContent: "space-between", // Separa o topo da folha branca
+    justifyContent: "space-between",
   },
   topSection: {
     flex: 1,
-    paddingTop: 50, // Espaço para a barra de status do celular
+    paddingTop: 50, 
     paddingHorizontal: 20,
   },
   backButton: {
@@ -151,7 +161,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   backArrow: {
-    color: "#FFF", // Ajuste a cor da seta dependendo da imagem de fundo
+    color: "#FFF", 
     fontSize: 28,
     fontWeight: "bold",
   },
@@ -162,7 +172,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     paddingTop: 40,
     paddingBottom: 50,
-    // O flex abaixo controla a altura da parte branca. Aumente se quiser que ela suba mais.
+    
     flex: 2,
   },
   scrollContent: {
@@ -192,10 +202,10 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 16,
     color: "#333",
-    padding: 0, // Remove o padding padrão do Android
+    padding: 0, 
   },
   loginButton: {
-    backgroundColor: "#5C4033", // Tom de marrom escuro baseado na imagem
+    backgroundColor: "#5C4033",
     borderRadius: 20,
     paddingVertical: 18,
     alignItems: "center",
@@ -217,7 +227,7 @@ const styles = StyleSheet.create({
   },
   footerLink: {
     fontSize: 14,
-    color: "#0056D2", // Cor azul para o link
+    color: "#0056D2", 
     textDecorationLine: "underline",
   },
 });
