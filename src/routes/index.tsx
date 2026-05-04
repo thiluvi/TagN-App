@@ -6,15 +6,14 @@ import { ActivityIndicator, View } from "react-native";
 
 import { Cadastro } from "../pages/Cadastro";
 import { Login } from "../pages/Login";
-import { TabRoutes } from "./tab.routes";
-import { Home } from "../pages/Home";
 import { Produto } from "../pages/Produto";
+import { TabRoutes } from "./tab.routes";
 
 const Stack = createNativeStackNavigator();
 
 export function Routes() {
   // 1. Estados para controlar a tela inicial e o carregamento
-  const [initialRoute, setInitialRoute] = useState("Home"); // Padrão é Login
+  const [initialRoute, setInitialRoute] = useState("Home"); // Padrão é home
   const [isLoading, setIsLoading] = useState(true); // Começa carregando
 
   // 2. Efeito que roda assim que o aplicativo abre

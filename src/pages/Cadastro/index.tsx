@@ -12,7 +12,6 @@ import {
   View,
 } from "react-native";
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Feather } from "@expo/vector-icons";
 
 export function Cadastro({ navigation }: any) {
@@ -28,8 +27,8 @@ export function Cadastro({ navigation }: any) {
     if (!nome || !email || !senha) {
       Alert.alert("Atenção", "Por favor, preencha todos os campos.");
       return;
-    } 
-    
+    }
+
     // validacao basica de email que peguei na net pra ver se tem @
     const emailRegex = /\S+@\S+\.\S+/;
     if (!emailRegex.test(email)) {
@@ -54,7 +53,7 @@ export function Cadastro({ navigation }: any) {
 
     try {
       // url da api (coloquei meu ip fixo pq o localhost tava bugando no emulador)
-      const URL_BACKEND = "http://192.168.1.7:8080";
+      const URL_BACKEND = "http://localhost:8080";
       const response = await fetch(
         `${URL_BACKEND}/api/auth/cadastro`,
         {
@@ -87,7 +86,7 @@ export function Cadastro({ navigation }: any) {
         source={require("../../assets/Utilitarios/banner.png")}
         style={styles.backgroundImage}
       >
-       
+
         <View style={styles.topSection}>
           <TouchableOpacity
             style={styles.backButton}
@@ -97,7 +96,7 @@ export function Cadastro({ navigation }: any) {
           </TouchableOpacity>
         </View>
 
-        
+
         <View style={styles.bottomSheet}>
           <ScrollView
             showsVerticalScrollIndicator={false}
@@ -144,7 +143,7 @@ export function Cadastro({ navigation }: any) {
               />
             </View>
 
-            
+
             <View style={styles.inputContainer}>
               <Text style={styles.inputLabel}>Confirme a senha</Text>
               <TextInput
@@ -182,7 +181,7 @@ const styles = StyleSheet.create({
   },
   topSection: {
     flex: 1,
-    paddingTop: 50, 
+    paddingTop: 50,
     paddingHorizontal: 20,
   },
   backButton: {
@@ -200,14 +199,14 @@ const styles = StyleSheet.create({
     flex: 3,
   },
   scrollContent: {
-    paddingBottom: 40, 
+    paddingBottom: 40,
   },
   title: {
     fontSize: 28,
     fontWeight: "bold",
     color: "#000",
     marginBottom: 30,
-    textAlign: "center", 
+    textAlign: "center",
   },
   inputContainer: {
     borderWidth: 1,
@@ -228,7 +227,7 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   registerButton: {
-    backgroundColor: "#5C4033", 
+    backgroundColor: "#5C4033",
     borderRadius: 20,
     paddingVertical: 18,
     alignItems: "center",

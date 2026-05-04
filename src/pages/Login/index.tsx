@@ -30,7 +30,7 @@ export function Login({ navigation }: any) {
 
     try {
       // tenta mandar pro backend no meu ip local pq no emulador as vezes buga
-      const URL_BACKEND = "http://192.168.1.7:8080";
+      const URL_BACKEND = "http://localhost:8080";
       const response = await fetch(
         `${URL_BACKEND}/api/auth/login`,
         {
@@ -48,9 +48,9 @@ export function Login({ navigation }: any) {
         await AsyncStorage.setItem("@tagn_user", JSON.stringify(userData));
 
         Alert.alert("Bem-vindo!", `Olá, ${userData.nome}`);
-        navigation.replace("Home"); 
+        navigation.replace("Home");
       } else {
-       
+
         Alert.alert("Erro", "E-mail ou senha inválidos.");
       }
     } catch (error) {
@@ -64,13 +64,13 @@ export function Login({ navigation }: any) {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      
+
 
       <ImageBackground
         source={require("../../assets/Utilitarios/banner.png")}
         style={styles.backgroundImage}
       >
-       
+
         {/* botaozin de voltar pro inicio */}
         <View style={styles.topSection}>
           <TouchableOpacity
@@ -81,7 +81,7 @@ export function Login({ navigation }: any) {
           </TouchableOpacity>
         </View>
 
-      
+
         <View style={styles.bottomSheet}>
           <ScrollView
             showsVerticalScrollIndicator={false}
@@ -89,7 +89,7 @@ export function Login({ navigation }: any) {
           >
             <Text style={styles.title}>Bem vindo(a) de volta</Text>
 
-          
+
             {/* digita o email aqui */}
             <View style={styles.inputContainer}>
               <Text style={styles.inputLabel}>Email</Text>
@@ -104,8 +104,8 @@ export function Login({ navigation }: any) {
               />
             </View>
 
-           
-            
+
+
             <View style={styles.inputContainer}>
               <Text style={styles.inputLabel}>Senha</Text>
               <TextInput
@@ -114,17 +114,17 @@ export function Login({ navigation }: any) {
                 placeholderTextColor="#A0A0A0"
                 value={senha}
                 onChangeText={setSenha}
-                secureTextEntry 
+                secureTextEntry
               />
             </View>
 
-            
+
             {/* manda bala no login */}
             <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
               <Text style={styles.loginButtonText}>Entrar</Text>
             </TouchableOpacity>
 
-           
+
             {/* linkzinho pra quem n tem conta ir pro cadastro q eu fiz antes */}
             <View style={styles.footer}>
               <Text style={styles.footerText}>Ainda não tem uma conta? </Text>
@@ -132,7 +132,7 @@ export function Login({ navigation }: any) {
                 <Text style={styles.footerLink}>Crie uma</Text>
               </TouchableOpacity>
             </View>
-         
+
             <View style={{ height: 50 }} />
           </ScrollView>
         </View>
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   },
   topSection: {
     flex: 1,
-    paddingTop: 50, 
+    paddingTop: 50,
     paddingHorizontal: 20,
   },
   backButton: {
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   backArrow: {
-    color: "#FFF", 
+    color: "#FFF",
     fontSize: 28,
     fontWeight: "bold",
   },
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     paddingTop: 40,
     paddingBottom: 50,
-    
+
     flex: 2,
   },
   scrollContent: {
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 16,
     color: "#333",
-    padding: 0, 
+    padding: 0,
   },
   loginButton: {
     backgroundColor: "#5C4033",
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
   },
   footerLink: {
     fontSize: 14,
-    color: "#0056D2", 
+    color: "#0056D2",
     textDecorationLine: "underline",
   },
 });
